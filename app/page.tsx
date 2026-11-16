@@ -22,6 +22,7 @@ import { Suspense } from 'react';
 import SummaryCard from './components/sumaryCard';
 import DataTable from './components/DataTable';
 import AddPopup from './components/AddPopup';
+import AddPopupServerWrapper from './components/AddPopupServerWrapper'
 
 
 
@@ -48,9 +49,6 @@ export default async function Home({ searchParams }: PageProps) {
     { name: "Settings", icon: Settings },
   ];
 
-
-  const resolvedSearchParams = await searchParams;
-  const isModalOpen = resolvedSearchParams.modal === 'open';
 
 
   return (
@@ -205,9 +203,7 @@ export default async function Home({ searchParams }: PageProps) {
       </div>
 
       <Suspense fallback={null}>
-        {isModalOpen &&
-          <AddPopup branches={branches} />
-        }
+        <AddPopupServerWrapper searchParams={searchParams} branches={branches} />
       </Suspense>
 
 
