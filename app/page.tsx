@@ -18,7 +18,7 @@ import {
   MapPin,
   Users,
 } from "lucide-react";
-import { Suspense } from 'react'
+import { Suspense } from 'react';
 import SummaryCard from './components/sumaryCard';
 import DataTable from './components/DataTable';
 import AddPopup from './components/AddPopup';
@@ -35,7 +35,7 @@ const branches = [
 ];
 
 type PageProps = {
-  searchParams: Promise<{ modal?: string }>;
+  searchParams: Promise<{ [key: string]: string | string[] | undefined }>;
 };
 
 
@@ -47,6 +47,10 @@ export default async function Home({ searchParams }: PageProps) {
     { name: "Phone Directory", icon: Phone },
     { name: "Settings", icon: Settings },
   ];
+
+
+  const resolvedSearchParams = await searchParams;
+  const isModalOpen = resolvedSearchParams.modal === 'open';
 
 
   return (
@@ -200,10 +204,10 @@ export default async function Home({ searchParams }: PageProps) {
         </main>
       </div>
 
-
-
       <Suspense fallback={null}>
-        <AddPopup searchParams={searchParams} branches={branches} />
+        {isModalOpen &&
+          <AddPopup branches={branches} />
+        }
       </Suspense>
 
 

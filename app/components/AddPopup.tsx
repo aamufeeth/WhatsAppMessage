@@ -1,22 +1,18 @@
-"use server"
-import { useActionState } from 'react';
+"use client"
+import { useActionState} from 'react';
 import { SaveData } from './DataHandling';
 import Link from 'next/link';
 import FormField from './FormField';
 import { X } from "lucide-react";
 
 type ModalHandlerProps = {
-  searchParams: Promise<{ modal?: string }>;
   branches: string[];
 };
 
-export default async function AddPopup({ searchParams, branches }: ModalHandlerProps) {
+export default function AddPopup({ branches }: ModalHandlerProps) {
   let editingId = 0;
   let error = null;
   const [state, formAction, isPending] = useActionState(SaveData, null);
-  const { modal } = await searchParams;
-
-  if (!modal) return null;
 
   return (
     <div className="fixed inset-0 z-50 bg-black/40 flex items-center justify-center p-4">
