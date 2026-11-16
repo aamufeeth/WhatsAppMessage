@@ -1,8 +1,10 @@
 "use server"
+import { useActionState } from 'react';
 import { SaveData } from './DataHandling';
 import Link from 'next/link';
 import FormField from './FormField';
 import { X } from "lucide-react";
+
 type ModalHandlerProps = {
   searchParams: Promise<{ modal?: string }>;
   branches: string[];
@@ -11,6 +13,7 @@ type ModalHandlerProps = {
 export default async function AddPopup({ searchParams, branches }: ModalHandlerProps) {
   let editingId = 0;
   let error = null;
+  const [state, formAction, isPending] = useActionState(SaveData, null);
 
   const { modal } = await searchParams;
 

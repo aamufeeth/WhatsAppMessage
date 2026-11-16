@@ -4,14 +4,20 @@ import sql from '@/lib/db';
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 
-export async function SaveData(formData: FormData) {
+type ActionState = {
+    error?: string;
+    message?: string;
+    success?: boolean;
+} | null;
+
+export async function SaveData(prevState: ActionState, formData: FormData): Promise<ActionState> {
     const manager = (formData.get('manager') as string)?.trim();
     const phone = (formData.get('phone') as string)?.trim();
     const email = (formData.get('email') as string)?.trim();
     const branch = (formData.get('branch') as string)?.trim();
 
     if (!manager || !phone || !email || !branch) {
-        return { success: false, message: 'All fields are required.' };
+        console.log({ success: false, message: 'All fields are required.' });
     }
 
     const url = new URL(process.env.DATABASE_URL!);
@@ -22,13 +28,15 @@ export async function SaveData(formData: FormData) {
       VALUES (${manager}, ${phone}, true, ${branch})
     `;
 
-        revalidatePath('/');
-        redirect('/');
         return { success: true, message: 'Manager saved successfully.' };
+        // console.log({ success: true, message: 'Manager saved successfully.' });
     } catch (error: any) {
-        console.error('Database Insert Error:', error);
+        // console.error('Database Insert Error:', error);
         return { success: false, message: 'Failed to save manager. Check that the branch code exists.' };
+        // console.log({ success: false, message: 'Failed to save manager. Check that the branch code exists.' });
     }
+    revalidatePath('/');
+    redirect('/');
 }
 
 export async function DeleteItem(id: number): Promise<void> {
