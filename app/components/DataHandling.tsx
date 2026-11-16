@@ -33,7 +33,7 @@ export async function SaveData(prevState: ActionState, formData: FormData): Prom
     } catch (error: any) {
         // console.error('Database Insert Error:', error);
         return { success: false, message: 'Failed to save manager. Check that the branch code exists.' };
-        // console.log({ success: false, message: 'Failed to save manager. Check that the branch code exists.' });
+        //console.log({ success: false, message: 'Failed to save manager. Check that the branch code exists.' });
     }
     revalidatePath('/');
     redirect('/');

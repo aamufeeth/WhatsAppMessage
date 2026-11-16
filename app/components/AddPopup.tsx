@@ -14,7 +14,6 @@ export default async function AddPopup({ searchParams, branches }: ModalHandlerP
   let editingId = 0;
   let error = null;
   const [state, formAction, isPending] = useActionState(SaveData, null);
-
   const { modal } = await searchParams;
 
   if (!modal) return null;
@@ -41,7 +40,7 @@ export default async function AddPopup({ searchParams, branches }: ModalHandlerP
             <X size={20} />
           </Link>
         </div>
-        <form action={SaveData}>
+        <form action={formAction}>
           <div className="p-5 grid grid-cols-1 md:grid-cols-2 gap-4">
             <FormField label="Phone Number *">
               <input
