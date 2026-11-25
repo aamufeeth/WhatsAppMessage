@@ -10,22 +10,36 @@ type ActionState = {
     success?: boolean;
 } | null;
 
+function formatWhatsAppNumber(phone: string): string {
+  const digits = phone.replace(/\D/g, '');
+  if (digits.length === 10) {
+    return `91${digits}`;
+  }
+  if (digits.length === 11 && digits.startsWith('0')) {
+    return `91${digits.slice(1)}`;
+  }
+  return digits;
+}
+
 export async function SaveData(prevState: ActionState, formData: FormData): Promise<ActionState> {
     const manager = (formData.get('manager') as string)?.trim();
-    const phone = (formData.get('phone') as string)?.trim();
+    const phone = formatWhatsAppNumber((formData.get('phone') as string)?.trim());
     const email = (formData.get('email') as string)?.trim();
     const branch = (formData.get('branch') as string)?.trim();
+
+
 
     if (!manager || !phone || !email || !branch) {
         console.log({ success: false, message: 'All fields are required.' });
     }
 
+
     const url = new URL(process.env.DATABASE_URL!);
 
     try {
         await sql`
-      INSERT INTO alert_recipients (recipient_name, phone_number, is_enabled, branch_id)
-      VALUES (${manager}, ${phone}, true, ${branch})
+      INSERT INTO alert_recipients (client_id, recipient_name, phone_number, is_enabled, branch_id)
+      VALUES (1, ${manager}, ${phone}, true, ${branch})
     `;
 
         return { success: true, message: 'Manager saved successfully.' };
