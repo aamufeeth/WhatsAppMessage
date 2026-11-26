@@ -11,7 +11,7 @@ export async function GET() {
   const authUrl = oauth2Client.generateAuthUrl({
     access_type: 'offline', // Requests permanent refresh_token
     prompt: 'consent',      // Forces consent screen so refresh_token is always returned
-    scope: ['https://www.googleapis.com']
+    scope: ['https://www.googleapis.com/auth/business.manage']
   });
 
   return NextResponse.redirect(authUrl);
